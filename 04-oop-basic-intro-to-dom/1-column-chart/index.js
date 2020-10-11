@@ -3,7 +3,7 @@ export default class ColumnChart {
   chartHeight = 50;
 
   constructor(options = {data: [], label: '', value: '', link: ''}) {
-
+    this.element = document.createElement('div');
     this.data = options.data || [];
     this.label = options.label || '';
     this.value = options.value || '';
@@ -24,7 +24,6 @@ export default class ColumnChart {
   }
 
   render() {
-    this.element = document.createElement('div');
     this.element.classList.add('column-chart_loading');
     const title = this.label? `Total ${this.label}` : '';
     const titleLink = this.link? ` <a class="column-chart__link" href="${this.link}">View all</a>` : '';
