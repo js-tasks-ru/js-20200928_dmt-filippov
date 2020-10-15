@@ -1,18 +1,5 @@
 export default class NotificationMessage {
 
-  static setActiveNotification(element) {
-    if (this.activeNotification) {
-      this.activeNotification.destroy();
-    }
-    this.activeNotification = element;
-  }
-
-  static delActiveNotification(element) {
-    if (this.activeNotification === element ) {
-      this.activeNotification = null;
-    }
-  }
-
   static activeNotification;
 
   element; // HTMLElement;
@@ -24,6 +11,12 @@ export default class NotificationMessage {
     this.message = message;
     this.duration = duration;
     this.type = type;
+    /* переделал
+     * Но тогда просто удаляется елемент из DOM, а сам компонент остается активным и его "таймер". Или я что то не так понял =)
+     */
+    if (NotificationMessage.activeNotification) {
+      NotificationMessage.activeNotification.remove();
+    }
     this.render();
   }
 
@@ -42,21 +35,22 @@ export default class NotificationMessage {
       </div>
     `;
     this.element = element.firstElementChild;
+    NotificationMessage.activeNotification = this.element;
   }
 
   show(parent = document.body) {
     parent.append(this.element);
-    NotificationMessage.setActiveNotification(this);
-    this.timer = setTimeout(() => this.destroy(), this.duration);
+    setTimeout(() => this.remove(), this.duration);
   }
 
   remove() {
     this.element.remove();
+    if (NotificationMessage.activeNotification === this.element) {
+      NotificationMessage.activeNotification = null;
+    }
   }
 
   destroy() {
     this.remove();
-    clearTimeout(this.timer);
-    NotificationMessage.delActiveNotification(this);
   }
 }
