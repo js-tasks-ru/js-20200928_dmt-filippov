@@ -25,12 +25,10 @@ class Tooltip {
   }
 
   onPointerOut(event) {
-    // if (!event.target.dataset.tooltip) return;
     this.remove();
   }
 
   render(target) {
-    console.log ('render');
     const element = document.createElement('div');
     element.innerHTML = `<div class="tooltip">${target}</div>`;
     this.element = element.firstElementChild;
@@ -40,7 +38,6 @@ class Tooltip {
 
   remove() {
     if (!this.element) return;
-    console.log ('remove');
     this.element.remove();
     this.element = null;
     document.removeEventListener("pointermove", this.onPointerMove);
@@ -52,7 +49,6 @@ class Tooltip {
   }
 
   tooltipMove(event) {
-    console.log ('move');
     const x = (event.clientX + 5 + this.element.offsetWidth < document.documentElement.offsetWidth)
       ? event.clientX + 5
       : event.clientX - 5 - this.element.offsetWidth;
