@@ -75,18 +75,15 @@ export default class ColumnChart {
     }, {});
   }
 
-
-  async getData() {
-    this.url.searchParams.set('from', this.rangeFrom.toISOString());
-    this.url.searchParams.set('to', this.rangeTo.toISOString());
-    return await fetchJson(this.url);
-  }
-
   async update(from = new Date(), to = new Date()) {
     this.element.classList.add('column-chart_loading');
     this.rangeFrom = from;
     this.rangeTo = to;
-    this.data = await this.getData();
+
+    this.url.searchParams.set('from', this.rangeFrom.toISOString());
+    this.url.searchParams.set('to', this.rangeTo.toISOString());
+    this.data =  await fetchJson(this.url);
+
     this.subElements.body.innerHTML = this.renderData();
     this.subElements.header.innerHTML = this.chartHeader();
   }
